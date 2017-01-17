@@ -56,7 +56,7 @@
         iterator(collection[i], i, collection);
       }
     } else if (isObject) {
-      for (var key of collection) {
+      for (var key in collection) {
         iterator(collection[key], key, collection);
       }
     }
