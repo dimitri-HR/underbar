@@ -545,6 +545,17 @@
 
         expect(result).to.equal(0);
       });
+// ---------
+      // it('should accept FALSE value as a valid memo', function() {
+      //   // Be careful how you check if a memo has been passed in
+      //   var result = _.reduce([1,2,3], function(memo, item) {
+      //     return memo;
+      //   }, false);
+      //
+      //   expect(result).to.be.false;
+      // });
+// ---------
+
 
       it('should set memo to be the first item of the array if no memo is passed in', function() {
         var result = _.reduce([1,2,3], function(memo) {
