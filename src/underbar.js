@@ -194,7 +194,8 @@
     });
     return accumulator;
   };
-  //
+
+  // Previous _.reduce - fails tests when initial value is false
   // _.reduce = function(collection, iterator, accumulator) {
   //    _.each(collection, function (el) {
   //      if (accumulator || accumulator === 0){
@@ -211,38 +212,24 @@
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
-    var res = _.reduce(collection, function(wasFound, item) {
-      console.log('wasFound0 - ', wasFound);
-      console.log('item - ', item);
+    return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
-        console.log('wasFound - ', wasFound);
-        console.log('----');
         return true;
       }
-      console.log('item === target - ', item === target);
-      console.log('----');
       return item === target;
     }, false);
-console.log(res);
-    return res;
   };
 
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    // need a true flag
-    // if flag == true, continue iterating
-    // iterate through collection and for each item
-    // call iterator(item), if return false update flag to false
-
     return _.reduce(collection, function(isFound, item) {
       if (isFound) {
-        isFound = iterator(item);
+        isFound = iterator ? Boolean(iterator(item)) : Boolean(item);
       }
       return isFound;
     }, true);
-
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
