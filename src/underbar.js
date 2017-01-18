@@ -111,15 +111,25 @@
 
 
   // Return the results of applying an iterator to each element.
+  // map() is a useful primitive iteration function that works a lot
+  // like each(), but in addition to running the operation on all
+  // the members, it also maintains an array of results.
+
+  // Original _.map
+  // _.map = function(collection, iterator) {
+  //   var results = [];
+  //   _.each(collection, function(el) {
+  //     results.push(iterator(el));
+  //   });
+  //   return results;
+  // };
+
+  // Refactored _.map using _.reduce
   _.map = function(collection, iterator) {
-    // map() is a useful primitive iteration function that works a lot
-    // like each(), but in addition to running the operation on all
-    // the members, it also maintains an array of results.
-    var results = [];
-    _.each(collection, function(el) {
+    return _.reduce(collection, function(results, el) {
       results.push(iterator(el));
-    });
-    return results;
+      return results;
+    },[]);
   };
 
   /*
