@@ -344,8 +344,40 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-  };
+    var arg = [];
+    var result;
 
+    var compareArg = function (arr1, arr2) {
+      if (arr1 === arr2) return true;
+      var res;
+      for (var i = 0; i < Math.max(arr1.length, arr2.length); i++) {
+        if (arr1[i] !== arr2[i]) {
+          return false;
+        }
+      }
+      return true;
+    };
+      console.log('result1', result);
+      console.log('arguments -', arguments);
+      console.log('arg', arg);
+      console.log('------');
+    return function () {
+      console.log('!compareArg(arg, arguments)', !compareArg(arg, arguments));
+      var arg2 = [arguments[0],arguments[1],arguments[2]];
+      if (!compareArg(arg, arg2)) {
+        arg = arg2;
+        console.log('----- start------');
+        console.log('arguments -', arguments);
+        console.log('arg', arg);
+        console.log('arg2', arg2);
+        result = func.apply(this, arg);
+            console.log('result2', result);
+            console.log('----- end------');
+      }
+      console.log('before results');
+      return result;
+    };
+  };
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
   //
@@ -353,7 +385,12 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var arg = [...arguments].slice(2);
+    setTimeout(function() {
+      func.apply(this, arg);
+    }, wait);
   };
+
 
 
   /**
