@@ -103,9 +103,9 @@
 
 
   // Return all elements of an array that don't pass a truth test.
+  // TIP: see if you can re-use _.filter() here, without simply
+  // copying code in and modifying it
   _.reject = function(collection, test) {
-    // TIP: see if you can re-use _.filter() here, without simply
-    // copying code in and modifying it
       return _.filter(collection, function(value) {
         return !test(value);
       });
@@ -154,10 +154,10 @@
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
+  // TIP: map is really handy when you want to transform an array of
+  // values into a new array of values. _.pluck() is solved for you
+  // as an example of this.
   _.pluck = function(collection, key) {
-    // TIP: map is really handy when you want to transform an array of
-    // values into a new array of values. _.pluck() is solved for you
-    // as an example of this.
     return _.map(collection, function(item){
       return item[key];
     });
@@ -212,9 +212,9 @@
 // Underbar 2 -----------------------------
 
   // Determine if the array or object contains a given value (using `===`).
+  // TIP: Many iteration problems can be most easily expressed in
+  // terms of reduce(). Here's a freebie to demonstrate!
   _.contains = function(collection, target) {
-    // TIP: Many iteration problems can be most easily expressed in
-    // terms of reduce(). Here's a freebie to demonstrate!
     return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
@@ -229,7 +229,6 @@
   _.every = function(collection, iterator) {
     return _.reduce(collection, function(isFound, item) {
       if (isFound) {
-        // isFound = iterator ? Boolean(iterator(item)) : Boolean(item);
         isFound = iterator ? !!iterator(item) : !!item;
       }
       return isFound;
@@ -239,6 +238,7 @@
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
 
+  // Not clever way but still works...
   // _.some = function(collection, iterator) {
   //   iterator = iterator || _.identity;
   //
@@ -249,7 +249,6 @@
   //   }
   //   return false;
   // };
-
 
 // TIP: There's a very clever way to re-use every() here.
   _.some = function(collection, iterator) {
@@ -279,12 +278,29 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var results = arguments[0];
 
+    for (var i = 1; i < arguments.length; i++) {
+      _.each(arguments[i], function(value, key) {
+        results[key] = value;
+      });
+    }
+    return results;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var results = arguments[0];
+
+    for (var i = 1; i < arguments.length; i++) {
+      _.each(arguments[i], function(value, key) {
+        if (!(key in results)) {
+          results[key] = value;
+        }
+      });
+    }
+    return results;
   };
 
 
