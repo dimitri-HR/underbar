@@ -343,45 +343,20 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+
   _.memoize = function(func) {
-    var arg = [];
-    var result;
-
-    var compareArg = function (arr1, arr2) {
-
-      for (var i = 0; i < Math.max(arr1.length, arr2.length); i++) {
-        if (arr1[i] !== arr2[i]) {
-          console.log('arr1[i] - ', arr1[i]);
-          console.log('arr2[i] - ', arr2[i]);
-          return false;
-        }
-      }
-      return true;
-    };
-      // console.log('result1', result);
-      // console.log('arguments -', arguments);
-      // console.log('arg', arg);
-      // console.log('------');
-
+    var results = {};
     return function () {
-      // console.log('!compareArg(arg, arguments)', !compareArg(arg, arguments));
-      if (!compareArg(arg, arguments)) {
-        arg = [...arguments];
-
-        console.log('arg', arg);
-        // console.log('----- start------');
-        // console.log('arguments -', arguments);
-        // console.log('arg2', arg2);
-
-        result = func.apply(this, arguments);
-
-            // console.log('result2', result);
-            // console.log('----- end------');
+      var args = JSON.stringify([...arguments]);
+      if (args in results) {
+        return results[args];
       }
-      // console.log('before results');
-      return result;
+      results[args] = func.apply(this, arguments);
+      return results[args];
     };
   };
+
+
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
   //
@@ -396,7 +371,6 @@
   };
 
 
-
   /**
    * ADVANCED COLLECTION OPERATIONS
    * ==============================
@@ -407,21 +381,26 @@
   // TIP: This function's test suite will ask that you not modify the original
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
-  _.shuffle = function(array) {
+  _.shuffle = function(arr) {
     // Random Shuffling An Array the Fisher-Yates (aka Knuth) Way
-    var currentIndex = array.length, randomIndex;
-    var shuffledArray = [];
+    var randomIndex;
+    var temporaryValue;
+    var array = arr.slice();
+    var currentIndex = array.length;
+
     // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
+    while (currentIndex !== 0) {
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
 
-      shuffledArray.push(array[currentIndex]);
+      // And swap it with the current element at the back.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
     }
-  return shuffledArray;
+  return array;
 };
-
 
 
 
@@ -435,15 +414,79 @@
 
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
+
   _.invoke = function(collection, functionOrKey, args) {
+      // iterate over a collection
+      // call each function with args
+      return _.each(collection, function(item) {
+        functionOrKey.apply(this,item, args);
+      });
   };
+
+  // _.invoke = function(collection, functionOrKey, args) {
+  // };
 
   // Sort the object's values by a criterion produced by an iterator.
   // If iterator is a string, sort objects by that property with the name
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
-  _.sortBy = function(collection, iterator) {
-  };
+
+  // _.sortBy = function(collection, iterator) {
+  // };
+
+
+
+  _.sortBy = function(collection, criteria) {
+    function compare (a, b) {
+      // if a - num
+      if (typeof a[criteria] === 'number') {
+          return a[criteria] - b[criteria];
+      }
+
+      // if a - string
+      if (typeof a[criteria] === 'string') {
+        if (a[criteria] > b[criteria]) {
+            return 1;
+        }
+        if (a[criteria] < b[criteria]) {
+            return -1;
+        }
+          // a must be equal to b
+          return 0;
+      }
+    };
+    return collection.sort(compare);
+}
+
+
+    // _.sortBy = function(collection, criteria) {
+  //   //type of criteria
+  //   var compare;
+  //   if (typeof criteria === 'string') {
+  //     compare = compareStrings;
+  //   }
+  //   if (typeof criteria === 'number') {
+  //     compare = compareNumbers;
+  //   }
+  //   var sorted = collection.sort(compare);
+  //
+  //
+  //   function compareNumbers (a, b) {
+  //     return a - b;
+  //   };
+  //
+  //   function compareStrings (a, b) {
+  //     if (a[criteria] > b[criteria]) {
+  //         return 1;
+  //       }
+  //     if (a[criteria] < b[criteria]) {
+  //         return -1;
+  //       }
+  //       // a must be equal to b
+  //       return 0;
+  //   };
+  //   return sorted;
+  // };
 
   // Zip together two or more arrays with elements of the same index
   // going together.
@@ -451,6 +494,8 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+
+
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
