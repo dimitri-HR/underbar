@@ -416,24 +416,13 @@
   // Note: You will need to learn a bit about .apply to complete this.
 
   _.invoke = function(collection, functionOrKey, args) {
-      // iterate over a collection
-      // call each function with args
-      return _.each(collection, function(item) {
-        functionOrKey.apply(this,item, args);
-      });
+    return _.map(collection, function(item) {
+      if (typeof functionOrKey === 'function') {
+        return functionOrKey.apply(item, args);
+      }
+      return item[functionOrKey].apply(item, args);
+    });
   };
-
-  // _.invoke = function(collection, functionOrKey, args) {
-  // };
-
-  // Sort the object's values by a criterion produced by an iterator.
-  // If iterator is a string, sort objects by that property with the name
-  // of that string. For example, _.sortBy(people, 'name') should sort
-  // an array of people by their name.
-
-  // _.sortBy = function(collection, iterator) {
-  // };
-
 
 
   _.sortBy = function(collection, criteria) {
