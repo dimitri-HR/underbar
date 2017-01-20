@@ -348,33 +348,37 @@
     var result;
 
     var compareArg = function (arr1, arr2) {
-      if (arr1 === arr2) return true;
-      var res;
+
       for (var i = 0; i < Math.max(arr1.length, arr2.length); i++) {
         if (arr1[i] !== arr2[i]) {
+          console.log('arr1[i] - ', arr1[i]);
+          console.log('arr2[i] - ', arr2[i]);
           return false;
         }
       }
       return true;
     };
-      console.log('result1', result);
-      console.log('arguments -', arguments);
-      console.log('arg', arg);
-      console.log('------');
+      // console.log('result1', result);
+      // console.log('arguments -', arguments);
+      // console.log('arg', arg);
+      // console.log('------');
+
     return function () {
-      console.log('!compareArg(arg, arguments)', !compareArg(arg, arguments));
-      var arg2 = [arguments[0],arguments[1],arguments[2]];
-      if (!compareArg(arg, arg2)) {
-        arg = arg2;
-        console.log('----- start------');
-        console.log('arguments -', arguments);
+      // console.log('!compareArg(arg, arguments)', !compareArg(arg, arguments));
+      if (!compareArg(arg, arguments)) {
+        arg = [...arguments];
+
         console.log('arg', arg);
-        console.log('arg2', arg2);
-        result = func.apply(this, arg);
-            console.log('result2', result);
-            console.log('----- end------');
+        // console.log('----- start------');
+        // console.log('arguments -', arguments);
+        // console.log('arg2', arg2);
+
+        result = func.apply(this, arguments);
+
+            // console.log('result2', result);
+            // console.log('----- end------');
       }
-      console.log('before results');
+      // console.log('before results');
       return result;
     };
   };
@@ -404,7 +408,21 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-  };
+    // Random Shuffling An Array the Fisher-Yates (aka Knuth) Way
+    var currentIndex = array.length, randomIndex;
+    var shuffledArray = [];
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      shuffledArray.push(array[currentIndex]);
+    }
+  return shuffledArray;
+};
+
+
 
 
   /**
