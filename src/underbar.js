@@ -425,57 +425,31 @@
   };
 
 
-  _.sortBy = function(collection, criteria) {
-    function compare (a, b) {
-      // if a - num
-      if (typeof a[criteria] === 'number') {
-          return a[criteria] - b[criteria];
+  // Sort the object's values by a criterion produced by an iterator.
+  // If iterator is a string, sort objects by that property with the name
+  // of that string. For example, _.sortBy(people, 'name') should sort
+  // an array of people by their name.
+  _.sortBy = function(collection, iterator) {
+    function sortMe (a, b) {
+      if (typeof iterator === 'function') {
+        a = iterator(a);
+        b = iterator(b);
       }
-
-      // if a - string
-      if (typeof a[criteria] === 'string') {
-        if (a[criteria] > b[criteria]) {
-            return 1;
-        }
-        if (a[criteria] < b[criteria]) {
-            return -1;
-        }
-          // a must be equal to b
-          return 0;
+      if (typeof iterator === 'string') {
+        a = a[iterator];
+        b = b[iterator];
       }
-    };
-    return collection.sort(compare);
-}
+      if (a < b) {
+        return -1;
+      }
+      if (a > b) {
+        return 1;
+      }
+        return 0;
+    }
+    return collection.sort(sortMe);
+  };
 
-
-    // _.sortBy = function(collection, criteria) {
-  //   //type of criteria
-  //   var compare;
-  //   if (typeof criteria === 'string') {
-  //     compare = compareStrings;
-  //   }
-  //   if (typeof criteria === 'number') {
-  //     compare = compareNumbers;
-  //   }
-  //   var sorted = collection.sort(compare);
-  //
-  //
-  //   function compareNumbers (a, b) {
-  //     return a - b;
-  //   };
-  //
-  //   function compareStrings (a, b) {
-  //     if (a[criteria] > b[criteria]) {
-  //         return 1;
-  //       }
-  //     if (a[criteria] < b[criteria]) {
-  //         return -1;
-  //       }
-  //       // a must be equal to b
-  //       return 0;
-  //   };
-  //   return sorted;
-  // };
 
   // Zip together two or more arrays with elements of the same index
   // going together.
