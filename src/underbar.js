@@ -65,10 +65,10 @@
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
+  // TIP: Here's an example of a function that needs to iterate, which we've
+  // implemented for you. Instead of using a standard `for` loop, though,
+  // it uses the iteration helper `each`, which you will need to write.
   _.indexOf = function(array, target){
-    // TIP: Here's an example of a function that needs to iterate, which we've
-    // implemented for you. Instead of using a standard `for` loop, though,
-    // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
 
     _.each(array, function(item, index) {
@@ -364,9 +364,9 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-    var arg = [...arguments].slice(2);
+    var args = [...arguments].slice(2);
     setTimeout(function() {
-      func.apply(this, arg);
+      func.apply(this, args);
     }, wait);
   };
 
@@ -467,13 +467,18 @@
       });
       return tempArr;
     }
+    // var longest = args[0];
+    // for (var k = 1; k < args.length; k++) {
+    //   if (args[k].length > longest.length) {
+    //     longest = args[k];
+    //   }
+    // }
 
     for (var i = 0; i < args[0].length; i++) {
       zipped.push(pushToArray(i));
     }
     return zipped;
   };
-
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
   // The new array should contain all elements of the multidimensional array.
@@ -494,19 +499,154 @@
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
+
   _.intersection = function() {
+    var result = [];
+    var firstArr = arguments[0];
+    var isElInArray = false;
+    for (var i = 0; i < firstArr.length; i++) {
+      for (var j = 1; j < arguments.length; j++) {
+        if (_.indexOf(arguments[j], firstArr[i]) > -1) {
+          isElInArray = true;
+        } else {
+          isElInArray = false;
+          break;
+        }
+      }
+      if (isElInArray) {
+        result.push(firstArr[i]);
+      }
+    }
+    return result;
   };
+
+  // var arr = [[1,2], [1,4,5], [5,6,7]]
+  //
+  // arr.sort(function(a, b) {
+  //   if (a.length < b.length) {
+  //     return 1
+  //   }
+  //   if (a.length > b.length) {
+  //     return -1
+  //   }
+  //   return 0;
+  // })
+  //
+  //
+  // _.indexOf = function(array, target){
+  //   var result = -1;
+  //
+  //   _.each(array, function(item, index) {
+  //     if (item === target && result === -1) {
+  //       result = index;
+  //     }
+  //   });
+  //   return result;
+  // };
+  //
+  //
+  // it('should take the set intersection of two arrays', function() {
+  //   var stooges = ['moe', 'curly', 'larry'];
+  //   var leaders = ['moe', 'groucho'];
+  //
+  //   expect(_.intersection(stooges, leaders)).to.eql(['moe']);
+  // });
+  //
+
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
-  _.difference = function(array) {
+
+  // to be refactored
+  _.difference = function() {
+    var result = [];
+    var firstArr = arguments[0];
+    var isElInArray = false;
+    for (var i = 0; i < firstArr.length; i++) {
+      for (var j = 1; j < arguments.length; j++) {
+        if (_.indexOf(arguments[j], firstArr[i]) === -1) {
+          isElInArray = true;
+        } else {
+          isElInArray = false;
+          break;
+        }
+      }
+      if (isElInArray) {
+        result.push(firstArr[i]);
+      }
+    }
+    return result;
   };
+
 
   // Returns a function, that, when invoked, will only be triggered at most once
   // during a given window of time.  See the Underbar readme for extra details
   // on this function.
   //
   // Note: This is difficult! It may take a while to implement.
+
   _.throttle = function(func, wait) {
+    var result;
+    var alreadyCalled = false;
+    var args = [...arguments].slice(2);
+
+    return function() {
+      if (!alreadyCalled) {
+        result = func.apply(this, arguments);
+        setTimeout(function() {
+          alreadyCalled = true;
+        }, wait);
+      }
+      return result;
+    };
   };
+
+
+
+  // Throttle - with Scheduling
+  // This version of throttle will schedule a function call at the end of waiting period
+  // E.g.
+  // t0 - initial call (with 100ms waiting window)
+  // t40 - another attempt to call a callback function. It doesn't run immediately but is scheduled to run at t100
+  // t60-99 - any attempt to call the function again will return previous results and do nothing else.
+  // t100 - a function runs (that was scheduled at t40)
+  // t120 - attempt to call will be scheduled to run at t200
+  // etc...
+
+  // _.throttle = function(func, wait) {
+  //   var isScheduled = false;
+  //   var args = [...arguments];
+  //   var lastRun;
+  //   var results;
+  //
+  //   return function() {
+  //     var currentTime = Date.now();
+  //     var getResults = function() {
+  //       lastRun = Date.now();
+  //       results = func.apply(this, args);
+  //     };
+  //     // first call
+  //     if (!lastRun || (lastRun + wait < currentTime)) {
+  //       getResults();
+  //       return results;
+  //     }
+  //     var delay = wait - Date.now() + lastRun;
+  //
+  //     // second call -> schedule
+  //     if ((lastRun + wait > currentTime) && !isScheduled) {
+  //       isScheduled = true;
+  //       setTimeout(function() {
+  //         isScheduled = false;
+  //         getResults();
+  //       }, delay);
+  //       return results;
+  //
+  //     // if already scheduled
+  //     } else if ((lastRun + wait >= currentTime )&& isScheduled) {
+  //       return results;
+  //     }
+  //   };
+  // };
+
+
 }());
