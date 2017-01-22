@@ -467,14 +467,15 @@
       });
       return tempArr;
     }
-    // var longest = args[0];
-    // for (var k = 1; k < args.length; k++) {
-    //   if (args[k].length > longest.length) {
-    //     longest = args[k];
-    //   }
-    // }
 
-    for (var i = 0; i < args[0].length; i++) {
+    var longestArr = args[0];
+    for (var k = 1; k < args.length; k++) {
+      if (args[k].length > longestArr.length) {
+        longestArr = args[k];
+      }
+    }
+
+    for (var i = 0; i < longestArr.length; i++) {
       zipped.push(pushToArray(i));
     }
     return zipped;
@@ -500,6 +501,7 @@
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
 
+  // to be refactored
   _.intersection = function() {
     var result = [];
     var firstArr = arguments[0];
@@ -600,8 +602,6 @@
       return result;
     };
   };
-
-
 
   // Throttle - with Scheduling
   // This version of throttle will schedule a function call at the end of waiting period
