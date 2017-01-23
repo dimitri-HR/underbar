@@ -521,6 +521,23 @@
     }
     return result;
   };
+  //
+  // describe('intersection', function() {
+  //   checkForNativeMethods(function() {
+  //     _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho'])
+  //   });
+  //
+  //   it('should take the set intersection of two arrays', function() {
+      // var stooges = ['moe', 'curly', 'larry'];
+      // var leaders = ['moe', 'groucho'];
+  //
+  //     expect(_.intersection(stooges, leaders)).to.eql(['moe']);
+  //   });
+  //
+  // _.intersection = function() {
+  //   var result = [];
+  //
+  // };
 
   // var arr = [[1,2], [1,4,5], [5,6,7]]
   //
@@ -558,6 +575,9 @@
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
+  // _.difference = function(array) {
+  // };
+
 
   // to be refactored
   _.difference = function() {
@@ -587,6 +607,8 @@
   //
   // Note: This is difficult! It may take a while to implement.
 
+  // The requirements for throttle were not very clear, so I made two versions of throttle (see below). Dimitri
+
   _.throttle = function(func, wait) {
     var result;
     var alreadyCalled = false;
@@ -604,7 +626,7 @@
   };
 
   // Throttle - with Scheduling
-  // This version of throttle will schedule a function call at the end of waiting period
+  // This version of throttle will schedule a function to be automatically called at the end of waiting period
   // E.g.
   // t0 - initial call (with 100ms waiting window)
   // t40 - another attempt to call a callback function. It doesn't run immediately but is scheduled to run at t100
