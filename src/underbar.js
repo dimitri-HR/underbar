@@ -578,26 +578,14 @@
   // _.difference = function(array) {
   // };
 
-
-  // to be refactored
   _.difference = function() {
-    var result = [];
     var firstArr = arguments[0];
-    var isElInArray = false;
-    for (var i = 0; i < firstArr.length; i++) {
-      for (var j = 1; j < arguments.length; j++) {
-        if (_.indexOf(arguments[j], firstArr[i]) === -1) {
-          isElInArray = true;
-        } else {
-          isElInArray = false;
-          break;
-        }
-      }
-      if (isElInArray) {
-        result.push(firstArr[i]);
-      }
-    }
-    return result;
+    // var args = [].slice.call(arguments, 1);
+    var args = [...arguments].slice(1);
+    var mergedArrays = [].concat(...args);
+    return _.filter(firstArr, function(el){
+      return _.indexOf(mergedArrays, el) === -1;
+    });
   };
 
 
