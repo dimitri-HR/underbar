@@ -467,14 +467,12 @@
       });
       return tempArr;
     }
-
     var longestArr = args[0];
     for (var k = 1; k < args.length; k++) {
       if (args[k].length > longestArr.length) {
         longestArr = args[k];
       }
     }
-
     for (var i = 0; i < longestArr.length; i++) {
       zipped.push(pushToArray(i));
     }
@@ -500,88 +498,25 @@
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
-
-  // to be refactored
+  // Refactored
   _.intersection = function() {
-    var result = [];
-    var firstArr = arguments[0];
-    var isElInArray = false;
-    for (var i = 0; i < firstArr.length; i++) {
-      for (var j = 1; j < arguments.length; j++) {
-        if (_.indexOf(arguments[j], firstArr[i]) > -1) {
-          isElInArray = true;
-        } else {
-          isElInArray = false;
-          break;
-        }
-      }
-      if (isElInArray) {
-        result.push(firstArr[i]);
-      }
-    }
-    return result;
+    var args = [...arguments];
+    return _.reduce(args, function(result, array){
+      return _.filter(result, function(el) {
+        return _.indexOf(array, el) > -1;
+      });
+    });
   };
-  //
-  // describe('intersection', function() {
-  //   checkForNativeMethods(function() {
-  //     _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho'])
-  //   });
-  //
-  //   it('should take the set intersection of two arrays', function() {
-      // var stooges = ['moe', 'curly', 'larry'];
-      // var leaders = ['moe', 'groucho'];
-  //
-  //     expect(_.intersection(stooges, leaders)).to.eql(['moe']);
-  //   });
-  //
-  // _.intersection = function() {
-  //   var result = [];
-  //
-  // };
-
-  // var arr = [[1,2], [1,4,5], [5,6,7]]
-  //
-  // arr.sort(function(a, b) {
-  //   if (a.length < b.length) {
-  //     return 1
-  //   }
-  //   if (a.length > b.length) {
-  //     return -1
-  //   }
-  //   return 0;
-  // })
-  //
-  //
-  // _.indexOf = function(array, target){
-  //   var result = -1;
-  //
-  //   _.each(array, function(item, index) {
-  //     if (item === target && result === -1) {
-  //       result = index;
-  //     }
-  //   });
-  //   return result;
-  // };
-  //
-  //
-  // it('should take the set intersection of two arrays', function() {
-  //   var stooges = ['moe', 'curly', 'larry'];
-  //   var leaders = ['moe', 'groucho'];
-  //
-  //   expect(_.intersection(stooges, leaders)).to.eql(['moe']);
-  // });
-  //
-
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   // _.difference = function(array) {
   // };
-
+  // Refactored
   _.difference = function() {
-    var firstArr = arguments[0];
     // var args = [].slice.call(arguments, 1);
     var args = [...arguments].slice(1);
+    var firstArr = arguments[0];
     var mergedArrays = [].concat(...args);
     return _.filter(firstArr, function(el){
       return _.indexOf(mergedArrays, el) === -1;
@@ -595,7 +530,9 @@
   //
   // Note: This is difficult! It may take a while to implement.
 
-  // The requirements for throttle were not very clear, so I made two versions of throttle (see below). Dimitri
+  // The requirements for throttle were not very clear,
+  // so I made two versions of throttle (see below).
+  // Dimitri
 
   _.throttle = function(func, wait) {
     var result;
